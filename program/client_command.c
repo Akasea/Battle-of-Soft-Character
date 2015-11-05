@@ -33,21 +33,24 @@ int ExecuteCommand(char command)
     case END_COMMAND:
         endFlag = 0;
         break;
-    case CIRCLE_COMMAND:
-        RecvCircleData();
-        break;
+    //case CIRCLE_COMMAND:
+        //RecvCircleData();
+        //break;
     //case RECT_COMMAND:
         //RecvRectangleData();
         //break;
-    case DIAMOND_COMMAND:
-        RecvDiamondData();
-        break;
-    case WIN_COMMAND:
-    case LOSE_COMMAND:
-    case TIE_COMMAND:
-	buttonlock = 0;
-        DrawResult(command);
-        break;
+    //case DIAMOND_COMMAND:
+      //  RecvDiamondData();
+        //break;
+    //case WIN_COMMAND:
+    //case LOSE_COMMAND:
+    //case TIE_COMMAND:
+	//buttonlock = 0;
+        //DrawResult(command);
+        //break;
+      case BUTTON_COMMAND:
+	RecvButtonData();
+	break;
     }
     return endFlag;
 }
@@ -99,7 +102,7 @@ void SendCircleCommand(int pos)
 
     dataSize = 0;
     /* コマンドのセット */
-    SetCharData2DataBlock(data,CIRCLE_COMMAND,&dataSize);
+    //SetCharData2DataBlock(data,CIRCLE_COMMAND,&dataSize);
     /* クライアント番号のセット */
     SetIntData2DataBlock(data,pos,&dataSize);
 
@@ -259,7 +262,7 @@ void SendRockCommand()
     
     dataSize = 0;
     /* コマンドのセット */
-    SetCharData2DataBlock(data,ROCK_COMMAND,&dataSize);
+    //SetCharData2DataBlock(data,ROCK_COMMAND,&dataSize);
     
     /* データの送信 */
     SendData(data,dataSize);
@@ -288,7 +291,7 @@ void SendPaperCommand()
     
     dataSize = 0;
     /* コマンドのセット */
-    SetCharData2DataBlock(data,PAPER_COMMAND,&dataSize);
+    //SetCharData2DataBlock(data,PAPER_COMMAND,&dataSize);
     
     /* データの送信 */
     SendData(data,dataSize);
@@ -317,7 +320,7 @@ void SendScissorsCommand()
     
     dataSize = 0;
     /* コマンドのセット */
-    SetCharData2DataBlock(data,SCISSORS_COMMAND,&dataSize);
+    //SetCharData2DataBlock(data,SCISSORS_COMMAND,&dataSize);
     
     /* データの送信 */
     SendData(data,dataSize);
@@ -387,4 +390,64 @@ static void RecvTieData(void)
 
     /* 四角を表示する */
     DrawRectangle(x,y,width,height);
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+/**********************************************************************/
+//追加
+/*
+関数名  : SendKeyCommand
+機能    : キーボードが押されたキーを確認して送信する
+引数    : char key 押された方向キー
+出力    : なし
+//////////////////////////////////////////////////////////////////////*/
+void SendKeyCommand(char key)
+{
+    unsigned char	data[MAX_DATA];
+    int			dataSize;
+    dataSize = 0;
+#ifndef NDEBUG
+    printf("#####\n");
+    printf("SendKeyCommand()\n");
+    //printf("Send Paper Command to %d\n",pos);
+#endif
+    switch(key){
+    case up:
+        SetCharData2DataBlock(data,UP_KEYBOARD,&dataSize);
+        break;
+    case down:
+        SetCharData2DataBlock(data,DOWN_KEYBOARD,&dataSize);
+        break;
+    case right:
+        SetCharData2DataBlock(data,RIGHT_KEYBOARD,&dataSize);
+        break;
+    case left:
+        SetCharData2DataBlock(data,LEFT_KEYBOARD,&dataSize);
+        break;
+    }
+    SendData(data,dataSize);
+}
+
+
+
+/*追加関数*/
+/*****************************************************************
+関数名	: RecvButtonData
+機能	: プレイヤーが勝ったときに結果を受け取り、表示する
+引数	: なし
+出力	: なし
+*****************************************************************/
+static void RecvButtonData(void)
+{
+    int	x,y,pos;
+
+    /* 四角コマンドに対する引き数を受信する */
+    RecvIntData(&pos);
+    RecvIntData(&x);
+    RecvIntData(&y);
+
+    /* 四角を表示する */
+    DrawRectangle(x,y,20,20);
 }

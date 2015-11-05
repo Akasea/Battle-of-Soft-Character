@@ -15,7 +15,7 @@ static int GetRandomInt(int n);
 int gClientNum;
 void SaveRPS(char command,int pos,int num);
 int JudgeRPS(char command1,char command2);
-
+void AjustButton(int pos,char command);
 /*****************************************************************
 関数名	: ExecuteCommand
 機能	: クライアントから送られてきたコマンドを元に，
@@ -50,23 +50,24 @@ int ExecuteCommand(char command,int pos)
 
 			endFlag = 0;
 			break;
-	    case CIRCLE_COMMAND:
+	    /*case CIRCLE_COMMAND:
 			/* 円を表示するクライアント番号を受信する */
-			RecvIntData(pos,&intData);
+		//	RecvIntData(pos,&intData);
 
-			dataSize = 0;
+		//	dataSize = 0;
 			/* コマンドのセット */
-			SetCharData2DataBlock(data,command,&dataSize);
+		//	SetCharData2DataBlock(data,command,&dataSize);
 			/* 左上の x 座標のセット */
-			SetIntData2DataBlock(data,GetRandomInt(500),&dataSize);
+		//	SetIntData2DataBlock(data,GetRandomInt(500),&dataSize);
 			/* 左上の y 座標のセット */
-			SetIntData2DataBlock(data,GetRandomInt(300),&dataSize);
+		//	SetIntData2DataBlock(data,GetRandomInt(300),&dataSize);
 			/* 直径のセット */
-			SetIntData2DataBlock(data,GetRandomInt(100),&dataSize);
+		//	SetIntData2DataBlock(data,GetRandomInt(100),&dataSize);
 
 			/* 指定されたクライアントに送る */
-			SendData(intData,data,dataSize);
-			break;
+		//	SendData(intData,data,dataSize);
+		//	break;
+
          /*case RECT_COMMAND:
 			dataSize = 0;
 			/* コマンドのセット */
@@ -85,11 +86,18 @@ int ExecuteCommand(char command,int pos)
 			//break;*/
 ///////////////////////////////////////////////////////////////////////////////////////
 /*変更点　ケース文の分岐を増やし、判定する関数にデータを送る*/
-    	case ROCK_COMMAND:
+    	/*case ROCK_COMMAND:
     	case PAPER_COMMAND:
     	case SCISSORS_COMMAND:
         	SaveRPS(command,pos,gClientNum);
         	break;
+	*/
+	case UP_KEYBOARD:
+	case DOWN_KEYBOARD:
+	case LEFT_KEYBOARD:
+	case RIGHT_KEYBOARD:
+		AjustButton(pos,command);
+		break;
     	default:
 			/* 未知のコマンドが送られてきた */
 			fprintf(stderr,"0x%02x is not command!\n",command);
@@ -114,7 +122,7 @@ void SendDiamondCommand(void)
 #endif
     dataSize = 0;
     /* コマンドのセット */
-    SetCharData2DataBlock(data,DIAMOND_COMMAND,&dataSize);
+    //SetCharData2DataBlock(data,DIAMOND_COMMAND,&dataSize);
     /* 菱形の左上の x 座標 */
     SetIntData2DataBlock(data,GetRandomInt(500),&dataSize);
     /* 菱形の左上の y 座標 */
@@ -193,9 +201,9 @@ static int GetRandomInt(int n)
           int num       :接続しているクライアント数
 出力     :なし
 *****************************************************************/
-void SaveRPS(char command,int pos,int num){
+/*void SaveRPS(char command,int pos,int num){
     /*じゃんけんの結果　勝ったクライアントのIDを示している　あいこは-1*/
-    int result = -1;
+/*    int result = -1;
     int tempresult = 0;
     int dataSize = 0;
     unsigned char data[MAX_DATA];
@@ -204,7 +212,7 @@ void SaveRPS(char command,int pos,int num){
     clientsRPS[pos] = command;
     int i = 0;
     /*すべてのクライアントから手が送信されているか確かめる*/
-    for (i = 0; i < num;i++){
+/*    for (i = 0; i < num;i++){
         if (clientsRPS[i]==NOTHING_COMMAND){ //NOTHING_COMMANDはまだ手を送信していないことを示している
             break;
         }
@@ -218,7 +226,7 @@ void SaveRPS(char command,int pos,int num){
 		}
        *///     }else
 
-	if (num == 2){//クライアントの数が2台の時
+/*	if (num == 2){//クライアントの数が2台の時
                 result = JudgeRPS(clientsRPS[0],clientsRPS[1]);
         	dataSize = 0;
 		fprintf(stderr,"result = %d\n",result);
@@ -226,9 +234,9 @@ void SaveRPS(char command,int pos,int num){
         	switch (result){
         	case -1:
             		command = TIE_COMMAND;
-            		/* コマンドのセット */
+            		/* コマンドのセット 
             		SetCharData2DataBlock(data,command,&dataSize);
-            		/* 全ユーザーに送る */
+            		/* 全ユーザーに送る 
             		SendData(ALL_CLIENTS,data,dataSize);
             		break;
         	default:
@@ -322,7 +330,7 @@ void SaveRPS(char command,int pos,int num){
           char command2   :判定させたい手２
 戻り値   :int    :じゃんけんの結果　　-1:あいこ　 1:先頭が勝利　 2:後方が勝利 
  ****************************************************************/
- int JudgeRPS(char command1,char command2){
+/* int JudgeRPS(char command1,char command2){
     switch(command1){
     case ROCK_COMMAND:
         if (command2 == PAPER_COMMAND){
@@ -354,3 +362,52 @@ void SaveRPS(char command,int pos,int num){
         break;
     }
 }
+*/
+///////////////////////////////////////////////////////////////////////////////////////////
+/*****************************************************************
+関数名   :AjustButton
+機能     :サーバーに送られてきたキーボードの状態から対応したボタンを動かす
+引数     :int pos   :送信してきたクライアントの番号
+          char command   :どのキーを押したか
+戻り値   : なし
+ ****************************************************************/
+void AjustButton(int pos,char command)
+{
+	int x,y=0;
+	switch (command){
+		case UP_KEYBOARD:
+			x--;
+			break;
+		case DOWN_KEYBOARD:
+			x++;
+			break;
+		case LEFT_KEYBOARD:
+			y--;
+			break;
+		case RIGHT_KEYBOARD:
+			y++;
+			break;
+	}
+
+	unsigned char data[MAX_DATA];
+	int           dataSize;
+
+#ifndef NDEBUG
+    printf("#####\n");
+    printf("SendDiamondCommand\n");
+#endif
+    dataSize = 0;
+    /* コマンドのセット */
+    SetCharData2DataBlock(data,BUTTON_COMMAND,&dataSize);
+    /*　クライアントの番号に応じて動かすボタンを指定する*/
+    SetIntData2DataBlock(data,pos,&dataSize);
+    /* ボタンの x 座標 */
+    SetIntData2DataBlock(data,x,&dataSize);
+    /* ボタンの y 座標 */
+    SetIntData2DataBlock(data,y,&dataSize);
+
+    /* クライアントに送る */
+    SendData(ALL_CLIENTS,data,dataSize);
+	
+}
+

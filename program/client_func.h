@@ -22,6 +22,7 @@ extern void WindowEvent(int num);
 extern void DrawRectangle(int x,int y,int width,int height);
 extern void DrawCircle(int x,int y,int r);
 extern void DrawDiamond(int x,int y,int height);
+extern void SendKeyCommand(char key);
 
 /* client_command.c */
 extern int ExecuteCommand(char command);

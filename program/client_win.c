@@ -15,6 +15,7 @@ static SDL_Rect gButtonRect[MAX_CLIENTS+2];
 static int CheckButtonNO(int x,int y,int num);
 extern int buttonlock;
 
+
 /*****************************************************************
 関数名	: InitWindows
 機能	: メインウインドウの表示，設定を行う
@@ -28,7 +29,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 	SDL_Surface *image;
 //////////////////////////////////////////////////////////////////////////////////////
 /*変更点　画像のファイル名を変更してグー、チョキ、パーが表示できるようにした*/
-	char clientButton[4][6]={"r.png","s.png","p.png"};
+	char clientButton[4][6]={"0.png","1.png","2.png"};
 	char endButton[]="END.jpg";
 	char allButton[]="ALL.jpg";
 
@@ -63,6 +64,10 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
         */
 	for(i=0;i<4;i++){
             if (i < 3){
+		/*gButtonRect[i].x=20+150*i;
+		gButtonRect[i].y=10;
+		gButtonRect[i].w=135;
+		gButtonRect[i].h=135;*/
 		gButtonRect[i].x=20+150*i;
 		gButtonRect[i].y=10;
 		gButtonRect[i].w=135;
@@ -159,6 +164,26 @@ void WindowEvent(int num)
 					}
 				}
 				break;
+                case SDL_PRESSED:
+                    printf("The pressed key is %s.\n",SDL_GetKeyName(event.keysym.sym));
+                    switch(event.key.keysym.sym){
+                    case SDLK_UP:
+                        printf("UP!\n");
+                        SendKeyCommand("up");//上が押された時に情報を送る
+                        break;
+                    case SDLK_DOWN:
+                        print("DOWN!\n");
+                        SendKeyCommand("down");
+                        break;
+                    case SDLK_LEFT:
+                        printf("LEFT!\n");
+                        SendKeyCommand("left");
+                        break;
+                    case SDLK_RIGHT:
+                        printf("RIGHT!\n");
+                        SendKeyCommand("right");
+                        break;
+                    }
 		}
 	}
 }
