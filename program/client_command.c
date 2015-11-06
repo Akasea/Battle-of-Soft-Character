@@ -11,7 +11,7 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 static void RecvCircleData(void);
 static void RecvRectangleData(void);
 static void RecvDiamondData(void);
-
+static void RecvButtonData(void);
 	int  buttonlock;
 /*****************************************************************
 関数名	: ExecuteCommand
@@ -414,16 +414,16 @@ void SendKeyCommand(char key)
     //printf("Send Paper Command to %d\n",pos);
 #endif
     switch(key){
-    case up:
+    case UP_KEYBOARD:
         SetCharData2DataBlock(data,UP_KEYBOARD,&dataSize);
         break;
-    case down:
+    case DOWN_KEYBOARD:
         SetCharData2DataBlock(data,DOWN_KEYBOARD,&dataSize);
         break;
-    case right:
+    case RIGHT_KEYBOARD:
         SetCharData2DataBlock(data,RIGHT_KEYBOARD,&dataSize);
         break;
-    case left:
+    case LEFT_KEYBOARD:
         SetCharData2DataBlock(data,LEFT_KEYBOARD,&dataSize);
         break;
     }
@@ -447,7 +447,7 @@ static void RecvButtonData(void)
     RecvIntData(&pos);
     RecvIntData(&x);
     RecvIntData(&y);
-
+    
     /* 四角を表示する */
     DrawRectangle(x,y,20,20);
 }

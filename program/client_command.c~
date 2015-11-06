@@ -11,7 +11,7 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 static void RecvCircleData(void);
 static void RecvRectangleData(void);
 static void RecvDiamondData(void);
-
+static void RecvButtonData(void);
 	int  buttonlock;
 /*****************************************************************
 関数名	: ExecuteCommand
@@ -102,7 +102,7 @@ void SendCircleCommand(int pos)
 
     dataSize = 0;
     /* コマンドのセット */
-    SetCharData2DataBlock(data,CIRCLE_COMMAND,&dataSize);
+    //SetCharData2DataBlock(data,CIRCLE_COMMAND,&dataSize);
     /* クライアント番号のセット */
     SetIntData2DataBlock(data,pos,&dataSize);
 
@@ -262,7 +262,7 @@ void SendRockCommand()
     
     dataSize = 0;
     /* コマンドのセット */
-    SetCharData2DataBlock(data,ROCK_COMMAND,&dataSize);
+    //SetCharData2DataBlock(data,ROCK_COMMAND,&dataSize);
     
     /* データの送信 */
     SendData(data,dataSize);
@@ -291,7 +291,7 @@ void SendPaperCommand()
     
     dataSize = 0;
     /* コマンドのセット */
-    SetCharData2DataBlock(data,PAPER_COMMAND,&dataSize);
+    //SetCharData2DataBlock(data,PAPER_COMMAND,&dataSize);
     
     /* データの送信 */
     SendData(data,dataSize);
@@ -320,7 +320,7 @@ void SendScissorsCommand()
     
     dataSize = 0;
     /* コマンドのセット */
-    SetCharData2DataBlock(data,SCISSORS_COMMAND,&dataSize);
+    //SetCharData2DataBlock(data,SCISSORS_COMMAND,&dataSize);
     
     /* データの送信 */
     SendData(data,dataSize);
@@ -414,16 +414,16 @@ void SendKeyCommand(char key)
     //printf("Send Paper Command to %d\n",pos);
 #endif
     switch(key){
-    case up:
+    case UP_KEYBOARD:
         SetCharData2DataBlock(data,UP_KEYBOARD,&dataSize);
         break;
-    case down:
+    case DOWN_KEYBOARD:
         SetCharData2DataBlock(data,DOWN_KEYBOARD,&dataSize);
         break;
-    case right:
+    case RIGHT_KEYBOARD:
         SetCharData2DataBlock(data,RIGHT_KEYBOARD,&dataSize);
         break;
-    case left:
+    case LEFT_KEYBOARD:
         SetCharData2DataBlock(data,LEFT_KEYBOARD,&dataSize);
         break;
     }

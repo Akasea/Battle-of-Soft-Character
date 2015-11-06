@@ -38,5 +38,27 @@
 #define LEFT_KEYBOARD 'L'
 #define RIGHT_KEYBOARD 'R'
 #define BUTTON_COMMAND 'B'
+//キャラクターの構造体
+typedef struct{ 
+  int x;
+  int y; 
+  int w;
+  int h;
+  int vx;
+  int vy;
+  int dir;
+  int stts;
+  int client_id;
+}character;
 
+typedef struct{
+ character chara1;//クライアント１のキャラデータ
+ character chara2;//クライアント２のキャラデータ
+}dataSendtoClient;
+/*
+typedef struct{
+  
+
+}dataSendtoServer;
+*/
 #endif

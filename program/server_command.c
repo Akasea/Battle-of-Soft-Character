@@ -9,10 +9,12 @@
 extern unsigned char clientsRPS[MAX_CLIENTS]; //クライアントそれぞれの手を記憶する
 
 int count = 0; //届いたクライアントの数をカウントして判定する
+
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 static int GetRandomInt(int n);
 int gClientNum;
+character chara;
 void SaveRPS(char command,int pos,int num);
 int JudgeRPS(char command1,char command2);
 void AjustButton(int pos,char command);
@@ -181,6 +183,30 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize)
     (*dataSize) += sizeof(char);
 }
 
+/********************************************************************
+関数名 : SetStructData2DataBlock
+機能   : クライアントに送信するための構造体を送信用データの最後にコピーする
+引数   : void *data :送信用データ
+         dataSendtoClient structData
+         int *dataSize
+*********************************************************************/
+
+static void SetStructData2DataBlock(void *data,dataSendtoClient structData,int *dataSize)
+{
+	int tmp;
+
+	assert(data!=NULL);
+	assert(0<=(*dataSize));
+	
+	tmp = htonl(structData);
+
+	memcpy(data + (*dataSize),&tmp,sizeof(dataSendtoClient));
+	(*dataSize) += sizeof(dataSendtoClient);
+
+}
+
+
+
 /*****************************************************************
 関数名	: GetRandomInt
 機能	: 整数の乱数を得る
@@ -191,6 +217,7 @@ static int GetRandomInt(int n)
 {
     return rand()%n;
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 /*追加点　新しい関数を作る*/
 /*****************************************************************
@@ -373,19 +400,23 @@ static int GetRandomInt(int n)
  ****************************************************************/
 void AjustButton(int pos,char command)
 {
-	int x,y=0;
+	int x=0,y=0;
 	switch (command){
 		case UP_KEYBOARD:
-			x--;
+			chara.x-=10;
+			x-=10;
 			break;
 		case DOWN_KEYBOARD:
-			x++;
+			chara.x+=10;
+			x+=10;
 			break;
 		case LEFT_KEYBOARD:
-			y--;
+			chara.y-=10;
+			y-=10;
 			break;
 		case RIGHT_KEYBOARD:
-			y++;
+			chara.y+=10;
+			y+=10;
 			break;
 	}
 

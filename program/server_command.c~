@@ -9,13 +9,15 @@
 extern unsigned char clientsRPS[MAX_CLIENTS]; //クライアントそれぞれの手を記憶する
 
 int count = 0; //届いたクライアントの数をカウントして判定する
+
 static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 static int GetRandomInt(int n);
 int gClientNum;
+character chara;
 void SaveRPS(char command,int pos,int num);
 int JudgeRPS(char command1,char command2);
-
+void AjustButton(int pos,char command);
 /*****************************************************************
 関数名	: ExecuteCommand
 機能	: クライアントから送られてきたコマンドを元に，
@@ -373,19 +375,23 @@ static int GetRandomInt(int n)
  ****************************************************************/
 void AjustButton(int pos,char command)
 {
-	int x,y=0;
+	int x=0,y=0;
 	switch (command){
 		case UP_KEYBOARD:
-			x--;
+			chara.x-=10;
+			x-=10;
 			break;
 		case DOWN_KEYBOARD:
-			x++;
+			chara.x+=10;
+			x+=10;
 			break;
 		case LEFT_KEYBOARD:
-			y--;
+			chara.y-=10;
+			y-=10;
 			break;
 		case RIGHT_KEYBOARD:
-			y++;
+			chara.y+=10;
+			y+=10;
 			break;
 	}
 

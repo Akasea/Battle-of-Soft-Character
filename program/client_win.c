@@ -123,7 +123,7 @@ void WindowEvent(int num)
 			case SDL_QUIT:
 				SendEndCommand();
 				break;
-			case SDL_MOUSEBUTTONUP:
+			/*case SDL_MOUSEBUTTONUP:
 				mouse = (SDL_MouseButtonEvent*)&event;
 				if(mouse->button == SDL_BUTTON_LEFT){
 					buttonNO = CheckButtonNO(mouse->x,mouse->y,num);
@@ -134,10 +134,10 @@ void WindowEvent(int num)
 #endif
 //////////////////////////////////////////////////////////////////////////////////////////////
 /*変更点　いつでも３つのボタンがおされているかを見なければならないのでnumを変更している*/
-					if(0<=buttonNO && buttonNO<3){
+					//if(0<=buttonNO && buttonNO<3){
 /////////////////////////////////////////////////////////////////////////////////////////////
 /*追加点　一回ボタンが押されたら結果が帰ってくるまで変更できない*/
-						if (buttonlock!=1){
+					/*	if (buttonlock!=1){
 							buttonlock = 1;
 							if (buttonNO == 0){
 								SendRockCommand();
@@ -148,8 +148,8 @@ void WindowEvent(int num)
 
 						/* 名前の書かれたボタンが押された */
 						//SendCircleCommand(buttonNO);
-							}
-						}
+						//	}
+						//}
                                         /*
 					else if(buttonNO==num){
 						// 「All」と書かれたボタンが押された
@@ -158,32 +158,36 @@ void WindowEvent(int num)
                                         */
 ////////////////////////////////////////////////////////////////////////////////////////////
 /*変更点　終わらせるENDボタンも見なければいけないのでnumから変更している*/
-					else if(buttonNO==3){
-						/* 「End」と書かれたボタンが押された */
-						SendEndCommand();
-					}
-				}
-				break;
-                case SDL_PRESSED:
-                    printf("The pressed key is %s.\n",SDL_GetKeyName(event.keysym.sym));
+					//else if(buttonNO==3){
+					//	/* 「End」と書かれたボタンが押された */
+					//	SendEndCommand();
+					//}
+				//}
+				//break;
+                case SDL_KEYDOWN:
+                    printf("The pressed key is %s.\n",SDL_GetKeyName(event.key.keysym.sym));
                     switch(event.key.keysym.sym){
+		    case SDLK_ESCAPE:
+			SendEndCommand();
+			break;
                     case SDLK_UP:
                         printf("UP!\n");
-                        SendKeyCommand("up");//上が押された時に情報を送る
+                        SendKeyCommand(UP_KEYBOARD);//上が押された時に情報を送る
                         break;
                     case SDLK_DOWN:
-                        print("DOWN!\n");
-                        SendKeyCommand("down");
+                        printf("DOWN!\n");
+                        SendKeyCommand(DOWN_KEYBOARD);
                         break;
                     case SDLK_LEFT:
                         printf("LEFT!\n");
-                        SendKeyCommand("left");
+                        SendKeyCommand(LEFT_KEYBOARD);
                         break;
                     case SDLK_RIGHT:
                         printf("RIGHT!\n");
-                        SendKeyCommand("right");
+                        SendKeyCommand(RIGHT_KEYBOARD);
                         break;
                     }
+		break;		
 		}
 	}
 }
@@ -264,12 +268,12 @@ void DrawDiamond(int x,int y,int height)
 機能    :クライアントが受け取った結果を画面に出力する
 引数    :char command   :じゃんけんの結果
 */
-void DrawResult(char command){
-    SDL_Surface *image;
-    SDL_Rect resultrect;
+//void DrawResult(char command){
+  //  SDL_Surface *image;
+   // SDL_Rect resultrect;
 //////////////////////////////////////////////////////////////////////////////////////
 /*追加　新しい配列を作って画像を参照する*/
-    char winprint[]="win.png";
+/*    char winprint[]="win.png";
     char loseprint[]="lose.png";
     char tieprint[]="tie.png";
     char *s;
