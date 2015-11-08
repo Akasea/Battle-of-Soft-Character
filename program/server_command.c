@@ -14,7 +14,7 @@ static void SetIntData2DataBlock(void *data,int intData,int *dataSize);
 static void SetCharData2DataBlock(void *data,char charData,int *dataSize);
 static int GetRandomInt(int n);
 int gClientNum;
-character chara;
+dataSendtoClient dataStruct;
 void SaveRPS(char command,int pos,int num);
 int JudgeRPS(char command1,char command2);
 void AjustButton(int pos,char command);
@@ -403,20 +403,32 @@ void AjustButton(int pos,char command)
 	int x=0,y=0;
 	switch (command){
 		case UP_KEYBOARD:
-			chara.x-=10;
-			x-=10;
+			if (pos==1){
+				dataStruct.chara1.y-=10;
+			}else{
+				dataStruct.chara2.y-=10;
+			}
 			break;
 		case DOWN_KEYBOARD:
-			chara.x+=10;
-			x+=10;
+			if (pos==1){
+				dataStruct.chara1.y+=10;
+			}else{
+				dataStruct.chara2.y+=10;
+			}
 			break;
 		case LEFT_KEYBOARD:
-			chara.y-=10;
-			y-=10;
+			if (pos==1){
+				dataStruct.chara1.x-=10;
+			}else{
+				dataStruct.chara2.x-=10;
+			}
 			break;
 		case RIGHT_KEYBOARD:
-			chara.y+=10;
-			y+=10;
+			if (pos==1){
+				dataStruct.chara1.x+=10;
+			}else{
+				dataStruct.chara2.x+=10;
+			}
 			break;
 	}
 
@@ -428,15 +440,18 @@ void AjustButton(int pos,char command)
     printf("SendDiamondCommand\n");
 #endif
     dataSize = 0;
-    /* コマンドのセット */
+    /*
+    // コマンドのセット /
     SetCharData2DataBlock(data,BUTTON_COMMAND,&dataSize);
-    /*　クライアントの番号に応じて動かすボタンを指定する*/
+    //　クライアントの番号に応じて動かすボタンを指定する/
     SetIntData2DataBlock(data,pos,&dataSize);
-    /* ボタンの x 座標 */
+    // ボタンの x 座標 /
     SetIntData2DataBlock(data,x,&dataSize);
-    /* ボタンの y 座標 */
+    // ボタンの y 座標 /
     SetIntData2DataBlock(data,y,&dataSize);
+                                           */
 
+    SetStructData2DataBlock(data,dataStruct,&dataSize);
     /* クライアントに送る */
     SendData(ALL_CLIENTS,data,dataSize);
 	

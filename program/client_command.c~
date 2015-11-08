@@ -447,7 +447,7 @@ static void RecvButtonData(void)
     RecvIntData(&pos);
     RecvIntData(&x);
     RecvIntData(&y);
-
+    
     /* 四角を表示する */
     DrawRectangle(x,y,20,20);
 }

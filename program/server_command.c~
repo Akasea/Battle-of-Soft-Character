@@ -183,6 +183,30 @@ static void SetCharData2DataBlock(void *data,char charData,int *dataSize)
     (*dataSize) += sizeof(char);
 }
 
+/********************************************************************
+関数名 : SetStructData2DataBlock
+機能   : クライアントに送信するための構造体を送信用データの最後にコピーする
+引数   : void *data :送信用データ
+         dataSendtoClient structData
+         int *dataSize
+*********************************************************************/
+
+static void SetStructData2DataBlock(void *data,dataSendtoClient structData,int *dataSize)
+{
+	int tmp;
+
+	assert(data!=NULL);
+	assert(0<=(*dataSize));
+	
+	tmp = htonl(structData);
+
+	memcpy(data + (*dataSize),&tmp,sizeof(dataSendtoClient));
+	(*dataSize) += sizeof(dataSendtoClient);
+
+}
+
+
+
 /*****************************************************************
 関数名	: GetRandomInt
 機能	: 整数の乱数を得る
@@ -193,6 +217,7 @@ static int GetRandomInt(int n)
 {
     return rand()%n;
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 /*追加点　新しい関数を作る*/
 /*****************************************************************

@@ -435,19 +435,35 @@ void SendKeyCommand(char key)
 /*追加関数*/
 /*****************************************************************
 関数名	: RecvButtonData
-機能	: プレイヤーが勝ったときに結果を受け取り、表示する
+機能	: ボタンの位置を受け取り描画する
 引数	: なし
 出力	: なし
 *****************************************************************/
-static void RecvButtonData(void)
+/*static void RecvButtonData(void)
 {
     int	x,y,pos;
 
-    /* 四角コマンドに対する引き数を受信する */
+    / 四角コマンドに対する引き数を受信する /
     RecvIntData(&pos);
     RecvIntData(&x);
     RecvIntData(&y);
     
-    /* 四角を表示する */
+    / 四角を表示する /
     DrawRectangle(x,y,20,20);
 }
+*/
+
+static void RecvButtonData(void)
+{
+	dataSendtoClient data;//サーバーからのデータを受け取るため型を宣言
+	RecvStructData(&data);//データを受け取る
+
+        //受け取ったデータから描画
+	DrawRectangle(data.chara1.x,data.chara1.y,20,20);
+	DrawRectangle(data.chara2.x,data.chara2.y,20,20);
+
+
+}
+
+
+

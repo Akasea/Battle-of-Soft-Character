@@ -134,6 +134,25 @@ int RecvIntData(int *intData)
 }
 
 /*****************************************************************
+関数名	: RecvStructData
+機能	: サーバーから構造体のdataSendtoClient型のデータを受け取る
+引数	: dataSendtoClient		*dataSendtoClientdata	: 受信したデータ
+出力	: 受け取ったバイト数
+*****************************************************************/
+int RecvStructData(dataSendtoClient *dataSendtoClientData)
+{
+	int n;
+	dataSendtoClient tmp;
+	
+	assert(dataSendtoClientData!=NULL);
+
+	n = RecvData(&tmp,sizeof(dataSendtoClient));
+	(*dataSendtoClientData) = tmp;//ntohl(tmp);
+
+	return n;
+}
+
+/*****************************************************************
 関数名	: SendData
 機能	: サーバーにデータを送る
 引数	: void		*data		: 送るデータ

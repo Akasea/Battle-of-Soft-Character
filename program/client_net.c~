@@ -13,6 +13,7 @@
 static int	gSocket;	/* ソケット */
 static fd_set	gMask;	/* select()用のマスク */
 static int	gWidth;		/* gMask中ののチェックすべきビット数 */
+	int	  buttonlock;
 
 static void GetAllName(int *clientID,int *num,char clientNames[][MAX_NAME_SIZE]);
 static void SetMask(void);
@@ -34,6 +35,8 @@ int SetUpClient(char *hostName,int *clientID,int *num,char clientNames[][MAX_NAM
     int			len;
     char		str[BUF_SIZE];
 
+/*変更点 フラグを作成してクライアントがすでに情報を送ったあとに結果がくるまで変更できないようにする*/
+    buttonlock = 0;
     /* ホスト名からホスト情報を得る */
     if((servHost = gethostbyname(hostName))==NULL){
 		fprintf(stderr,"Unknown host\n");
@@ -128,6 +131,25 @@ int RecvIntData(int *intData)
     (*intData) = ntohl(tmp);
     
     return n;
+}
+
+/*****************************************************************
+関数名	: RecvStructData
+機能	: サーバーから構造体のdataSendtoClient型のデータを受け取る
+引数	: dataSendtoClient		*dataSendtoClientdata	: 受信したデータ
+出力	: 受け取ったバイト数
+*****************************************************************/
+int RecvStructData(dataSendtoClient *dataSendtoClientData)
+{
+	int n;
+	dataSendtoClient tmp;
+	
+	assert(dataSendtoClientData!=NULL);
+
+	n = RecvData(&tmp,sizeof(dataSendtoClient));
+	(*dataSendtoClientData) = ntohl(tmp);
+
+	return n;
 }
 
 /*****************************************************************
