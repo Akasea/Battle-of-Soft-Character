@@ -105,24 +105,35 @@ int SendRecvManager(void)
     fd_set	readOK;
     int		i;
     int		endFlag = 1;
+    struct timeval	timeout;
+
+    /* select()の待ち時間を設定する */
+    timeout.tv_sec = 1;
+    timeout.tv_usec = 0;
+
+
 
     readOK = gMask;
+	printf("----before1 FDISSET----\n");
     /* クライアントからデータが届いているか調べる */
-    if(select(gWidth,&readOK,NULL,NULL,NULL) < 0){
+    if(select(gWidth,&readOK,NULL,NULL,&timeout) < 0){
         /* エラーが起こった */
+	printf("select error!\n");
         return endFlag;
     }
-
-    for(i=0;i<gClientNum;i++){
+    	printf("----before FDISSET----\n");
+    	for(i=0;i<gClientNum;i++){
 		if(FD_ISSET(gClients[i].fd,&readOK)){
 	    	/* クライアントからデータが届いていた */
 	    	/* コマンドを読み込む */
+			printf("----in FDISSET----\n");
 			RecvData(i,&command,sizeof(char));
 	    	/* コマンドに対する処理を行う */
-	    	endFlag = ExecuteCommand(command,i);
-	    	if(endFlag == 0)break;
+	    		endFlag = ExecuteCommand(command,i);
+	    		if(endFlag == 0)
+				break;
 		}
-    }
+    	}
     return endFlag;
 }
 

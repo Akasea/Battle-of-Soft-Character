@@ -109,6 +109,7 @@ int SendRecvManager(void)
     if(FD_ISSET(gSocket,&readOK)){
 		/* サーバーからデータが届いていた */
     	/* コマンドを読み込む */
+		printf("getdata!\n");
 		//RecvData(&command,sizeof(char));
 		  RecvData(&data,sizeof(dataSendtoClient));
     	/* コマンドに対する処理を行う */

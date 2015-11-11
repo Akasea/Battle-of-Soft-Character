@@ -38,7 +38,7 @@ int InitWindows(int clientID,int num,char name[][MAX_NAME_SIZE])
 
     /* 引き数チェック */
     assert(0<num && num<=MAX_CLIENTS);
-	
+	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_INTERVAL,SDL_DEFAULT_REPEAT_INTERVAL);
 	/* SDLの初期化 */
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
 		printf("failed to initialize SDL.\n");
@@ -116,11 +116,12 @@ void WindowEvent(int num)
 	SDL_Event event;
 	SDL_MouseButtonEvent *mouse;
 	int buttonNO;
-	SDL_EnableKeyRepeat(1,0);
+	
     /* 引き数チェック */
     assert(0<num && num<=MAX_CLIENTS);
 
 	if(SDL_PollEvent(&event)){
+		printf("Event!\n");
 		switch(event.type){
 			case SDL_QUIT:
 				SendEndCommand();

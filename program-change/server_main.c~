@@ -15,9 +15,9 @@ int main(int argc,char *argv[])
 	int	num;
 	int	endFlag = 1;
         //構造体の初期化
-	/*
+	//
 	dataStruct.chara1.x = 150;
-	dataStruct.chara1.y = 20;
+	dataStruct.chara1.y = 250;
 	dataStruct.chara1.w = 40;
 	dataStruct.chara1.h = 40;
 	dataStruct.chara1.vx = 0;
@@ -27,7 +27,7 @@ int main(int argc,char *argv[])
 	dataStruct.chara1.client_id = 0;
 
 	dataStruct.chara2.x = 350;
-	dataStruct.chara2.y = 20;
+	dataStruct.chara2.y = 250;
 	dataStruct.chara2.w = 40;
 	dataStruct.chara2.h = 40;
 	dataStruct.chara2.vx = 0;

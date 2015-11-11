@@ -473,3 +473,21 @@ void AjustButton(int pos,char command)
 	
 }
 
+
+/*****************************************************************
+関数名   : SendCurrentState
+機能     : 現在の状態をクライアントに送信する
+引数     : なし
+戻り値   : なし
+ ****************************************************************/
+
+void SendCurrentState(void)
+{
+	unsigned char data[MAX_DATA];
+	int           dataSize;
+	printf("send current data!\n");
+	dataStruct.command = BUTTON_COMMAND;
+	SetStructData2DataBlock(data,dataStruct,&dataSize);
+    	SendData(ALL_CLIENTS,data,dataSize);
+
+}

@@ -413,30 +413,30 @@ void AjustButton(int pos,char command)
 	switch (command){
 		case UP_KEYBOARD:
 			if (pos==0){
-				dataStruct.chara1.y-=10;
+				dataStruct.chara1.y-=30;
 			}else{
-				dataStruct.chara2.y-=10;
+				dataStruct.chara2.y-=30;
 			}
 			break;
 		case DOWN_KEYBOARD:
 			if (pos==0){
-				dataStruct.chara1.y+=10;
+				dataStruct.chara1.y+=30;
 			}else{
-				dataStruct.chara2.y+=10;
+				dataStruct.chara2.y+=30;
 			}
 			break;
 		case LEFT_KEYBOARD:
 			if (pos==0){
-				dataStruct.chara1.x-=10;
+				dataStruct.chara1.x-=30;
 			}else{
-				dataStruct.chara2.x-=10;
+				dataStruct.chara2.x-=30;
 			}
 			break;
 		case RIGHT_KEYBOARD:
 			if (pos==0){
-				dataStruct.chara1.x+=10;
+				dataStruct.chara1.x+=30;
 			}else{
-				dataStruct.chara2.x+=10;
+				dataStruct.chara2.x+=30;
 			}
 			break;
 	}
@@ -473,3 +473,21 @@ void AjustButton(int pos,char command)
 	
 }
 
+
+/*****************************************************************
+関数名   : SendCurrentState
+機能     : 現在の状態をクライアントに送信する
+引数     : なし
+戻り値   : なし
+ ****************************************************************/
+
+void SendCurrentState(void)
+{
+	unsigned char data[MAX_DATA];
+	int           dataSize;
+	
+	dataStruct.command = BUTTON_COMMAND;
+	SetStructData2DataBlock(data,dataStruct,&dataSize);
+    	SendData(ALL_CLIENTS,data,dataSize);
+
+}

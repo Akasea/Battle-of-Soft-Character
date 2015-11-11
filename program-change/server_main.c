@@ -66,6 +66,7 @@ int main(int argc,char *argv[])
 	
 	/* メインイベントループ */
 	while(endFlag){
+		SendCurrentState();
 		endFlag = SendRecvManager();
 	};
 
