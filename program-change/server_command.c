@@ -446,13 +446,13 @@ void AjustButton(int pos,char command)
 
 #ifndef NDEBUG
     printf("#####\n");
-    printf("SendDiamondCommand\n");
+    printf("AjustButton\n");
 #endif
     dataSize = 0;
     
     // コマンドのセット /
     //SetCharData2DataBlock(data,BUTTON_COMMAND,&dataSize);
-    dataStruct.command = BUTTON_COMMAND;
+    //dataStruct.command = BUTTON_COMMAND;
     /*　クライアントの番号に応じて動かすボタンを指定する/
     SetIntData2DataBlock(data,pos,&dataSize);
     // ボタンの x 座標 /
@@ -461,7 +461,7 @@ void AjustButton(int pos,char command)
     SetIntData2DataBlock(data,y,&dataSize);
                                            */
     //構造体をデータに格納する
-    SetStructData2DataBlock(data,dataStruct,&dataSize);
+    //SetStructData2DataBlock(data,dataStruct,&dataSize);
 
 //*確認用
     printf("dataSize = %d\n",dataSize);
@@ -469,7 +469,7 @@ void AjustButton(int pos,char command)
     printf("chara2 x=%d,y=%d\n",dataStruct.chara2.x,dataStruct.chara2.y);
 /*/   
     /* クライアントに送る */
-    SendData(ALL_CLIENTS,data,dataSize);
+    //SendData(ALL_CLIENTS,data,dataSize);
 	
 }
 
@@ -485,9 +485,20 @@ void SendCurrentState(void)
 {
 	unsigned char data[MAX_DATA];
 	int           dataSize;
-	printf("send current data!\n");
+	
+#ifndef NDEBUG
+    printf("#####\n");
+    printf("SendCurrentState\n");
+#endif
+	dataSize = 0;//きちんとデータサイズの初期化をしておかないとデータが不完全なものになる
+	
+	
+	//送信するときのコマンド設定
 	dataStruct.command = BUTTON_COMMAND;
+	printf("command = %c\n",dataStruct.command);
+	//データ構造体をセット
 	SetStructData2DataBlock(data,dataStruct,&dataSize);
-    	SendData(ALL_CLIENTS,data,dataSize);
+    	
+	SendData(ALL_CLIENTS,data,dataSize);
 
 }

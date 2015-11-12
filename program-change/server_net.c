@@ -108,17 +108,15 @@ int SendRecvManager(void)
     struct timeval	timeout;
 
     /* select()の待ち時間を設定する */
-    timeout.tv_sec = 1;
-    timeout.tv_usec = 0;
-
-
+    timeout.tv_sec = 0;//秒数
+    timeout.tv_usec = 5000;//マイクロ秒
 
     readOK = gMask;
 	printf("----before1 FDISSET----\n");
     /* クライアントからデータが届いているか調べる */
     if(select(gWidth,&readOK,NULL,NULL,&timeout) < 0){
         /* エラーが起こった */
-	printf("select error!\n");
+	//printf("select error!\n");
         return endFlag;
     }
     	printf("----before FDISSET----\n");

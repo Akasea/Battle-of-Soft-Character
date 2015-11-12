@@ -16,6 +16,7 @@ int main(int argc,char *argv[])
 	int	endFlag = 1;
         //構造体の初期化
 	//
+	unsigned int i = 0;
 	dataStruct.chara1.x = 150;
 	dataStruct.chara1.y = 250;
 	dataStruct.chara1.w = 40;
@@ -68,6 +69,9 @@ int main(int argc,char *argv[])
 	while(endFlag){
 		SendCurrentState();
 		endFlag = SendRecvManager();
+		i++;
+		printf("------loop %dlaps------\n",i);
+		printf("------- %lffps------\n",i)
 	};
 
 	/* 終了処理 */
