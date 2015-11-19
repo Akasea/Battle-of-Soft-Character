@@ -234,10 +234,9 @@ void AjustButton(int pos,char command)
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 /*****************************************************************
-関数名   :AjustButton
-機能     :サーバーに送られてきたキーボードの状態から対応したボタンを動かす
+関数名   :Wii_Button
+機能     :サーバーに送られてきたwiiリモコン構造体の状態から対応したボタンを動かす
 引数     :int pos   :送信してきたクライアントの番号
-          char command   :どのキーを押したか
 戻り値   : なし
  ****************************************************************/
 void Wii_Button(int pos)
@@ -246,13 +245,14 @@ void Wii_Button(int pos)
 	//printf("pos = %d\n",pos);
 	if(dataServer.wiimote.keys.up==1){ //押された時
 		if (pos==0){
-			dataStruct.chara1.y-=1;
+			dataStruct.chara1.x-=1;
 		}else{
-			dataStruct.chara2.y-=1;
-		}
+			dataStruct.chara2.x-=1;
+		}		
         }
         //右に移動(十字キーの下ボタン）
         if(dataServer.wiimote.keys.down==1){
+
 		if (pos==0){
 			dataStruct.chara1.y+=1;
 		}else{
@@ -262,20 +262,19 @@ void Wii_Button(int pos)
         //上に移動(十字キーの右ボタン）
         if(dataServer.wiimote.keys.right==1){
 		if (pos==0){
-			dataStruct.chara1.x+=1;
+			dataStruct.chara1.y-=1;
 		}else{
-			dataStruct.chara2.x+=1;
+			dataStruct.chara2.y-=1;
 		}
         }
         //下に移動(十字キーの左ボタン）
         if(dataServer.wiimote.keys.left==1){
 		if (pos==0){
-			dataStruct.chara1.x-=1;
+			dataStruct.chara1.x+=1;
 		}else{
-			dataStruct.chara2.x-=1;
+			dataStruct.chara2.x+=1;
 		}
         }
-	}
 
 }
 /*****************************************************************
